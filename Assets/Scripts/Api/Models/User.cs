@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Models
+namespace Api.Models
 {
     [Serializable]
     public class User
@@ -9,8 +9,8 @@ namespace Models
         public string username;
         public string password;
         public string token;
-        public DateTime createdAt;
-        public DateTime updatedAt;
+        public string createdAt;
+        public string updatedAt;
 
         public User(string username, string password)
         {
@@ -26,7 +26,7 @@ namespace Models
             this.token = token;
         }
 
-        public User(string id, string username, string password, string token, DateTime createdAt, DateTime updatedAt)
+        public User(string id, string username, string password, string token, string createdAt, string updatedAt)
         {
             _id = id;
             this.username = username;
@@ -34,6 +34,16 @@ namespace Models
             this.token = token;
             this.createdAt = createdAt;
             this.updatedAt = updatedAt;
+        }
+        
+        public override string ToString()
+        {
+            return $"_id: {_id} \n" +
+                   $"Username: {username} \n" +
+                   $"Password: {password} \n" +
+                   $"Token: {token} \n" +
+                   $"Created At: {createdAt} \n" +
+                   $"Updated At: {updatedAt}";
         }
     }
 }

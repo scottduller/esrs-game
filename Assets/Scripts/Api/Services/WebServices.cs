@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Api
+namespace Api.Services
 {
     public class WebServices : MonoBehaviour
     {
