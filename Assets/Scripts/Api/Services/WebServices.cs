@@ -6,7 +6,7 @@ namespace Api.Services
 {
     public class WebServices : MonoBehaviour
     {
-        public static string BaseUri = "http://localhost:5000/api";
+        public static string BaseUri = "http://esrs-server.eba-7ey4i4zp.eu-west-2.elasticbeanstalk.com/api";
         
         public static string AuthString
         {
