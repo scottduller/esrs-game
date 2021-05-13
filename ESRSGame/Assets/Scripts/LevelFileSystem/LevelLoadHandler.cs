@@ -16,9 +16,14 @@ public class LevelLoadHandler : MonoBehaviour
     List<string> _toWrite; //string list (item per line ) to be written to a file
     // Update is called once per frame
 
+    public bool instantLoad;
     private void Start()
     {
         _placedLevelObjectsList = _PlacedListSo.listOfObjects;
+        if (instantLoad)
+        {
+            testRead();
+        }
     }
 
     public void ReadFile(string title, string author)

@@ -38,6 +38,7 @@ namespace GridBuildSystem.UI
         private void CloseMenu()
         {
             _saveOptionsPane.SetActive(false);
+            //EXIT TO MAIN MENU
         
         }
     
