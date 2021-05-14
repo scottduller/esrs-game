@@ -1,7 +1,6 @@
 ﻿using System;
-using UnityEngine.Serialization;
 
-namespace Api.Models
+namespace Assets.Scripts.Api.Models
 {
     [Serializable]
     public class User

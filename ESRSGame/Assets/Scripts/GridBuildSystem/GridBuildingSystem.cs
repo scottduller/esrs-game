@@ -17,8 +17,9 @@ namespace GridBuildSystem
         internal bool Interactable = false;
         private bool _dragBuilder;
         public event EventHandler OnSelectedChanged;
+        private GameGrid<GridObject> _lowerGrid = null;
         public event EventHandler OnObjectPlaced;
-        private bool _intialised = false;
+        private bool _initialised = false;
         private GameGrid<GridObject> _grid;
         private PlacedObjectTypeSO.Dir _dir = PlacedObjectTypeSO.Dir.DOWN;
         private Vector2Int _initalClickXZ1, _intialClickXZ2;
@@ -32,8 +33,18 @@ namespace GridBuildSystem
             _placedObjectTypeSo = null;
             RefreshSelectedObjectType();
 
-            _intialised = true;
+            _initialised = true;
 
+        }
+
+        public GameGrid<GridObject> GETGrid()
+        {
+            return _grid;
+        }
+
+        public void SetLowerGrid(GameGrid<GridObject> grid)
+        {
+            _lowerGrid = grid;
         }
 
 
@@ -134,7 +145,7 @@ namespace GridBuildSystem
 
         private void Update()
         {
-            if (_intialised && Interactable)
+            if (_initialised && Interactable)
             {
                 if (!_dragBuilder)
                 {
@@ -157,6 +168,11 @@ namespace GridBuildSystem
         public void ChangeItem(PlacedObjectTypeSO placedObjectTypeSo)
         {
             _placedObjectTypeSo = placedObjectTypeSo;
+            if (placedObjectTypeSo != null)
+            {
+                _dragBuilder = placedObjectTypeSo.dragBuild;
+
+            }
             RefreshSelectedObjectType();
         }
 
@@ -171,9 +187,15 @@ namespace GridBuildSystem
                 _grid.GetXZ(worldPos, out var xEnd, out var zEnd);
                 List<Vector2Int> gridPositionList = GetAllGridPositions(new Vector2Int(xEnd, zEnd), _initalClickXZ1);
                 // gridPositionList.ForEach(x => Debug.Log(x)); 
-                var canBuild = gridPositionList.All(gridPosition =>
+                bool canBuild = gridPositionList.All(gridPosition =>
                     _grid.GetGridObject(gridPosition.x, gridPosition.y).CanBuild());
 
+                if (_lowerGrid != null && canBuild)
+                {
+                    canBuild =  gridPositionList.All(gridPosition =>
+                        _lowerGrid.GetGridObject(gridPosition.x, gridPosition.y).CanBuild());
+                    canBuild = !canBuild;
+                }
 
                 if (canBuild)
                 {
@@ -221,10 +243,21 @@ namespace GridBuildSystem
 
                 GridObject gridObject = _grid.GetGridObject(x, z);
                 Vector3 cellPosition = _grid.GetWorldPosition(x, z);
-                gridPositionList.ForEach(a => Debug.Log(_grid.GetGridObject(a.x, a.y).CanBuild()));
+                // gridPositionList.ForEach(a => Debug.Log(_grid.GetGridObject(a.x, a.y).CanBuild()));
                 //testing Can Build
+                if (cellPosition.x < 0 || cellPosition.y<0 || cellPosition.z<0)
+                {
+                    return;
+                }
                 bool canBuild = gridPositionList.All(gridPosition =>
-                    _grid.GetGridObject(gridPosition.x, gridPosition.y).CanBuild());
+                        _grid.GetGridObject(gridPosition.x, gridPosition.y).CanBuild());
+
+
+                    if (_lowerGrid != null && canBuild)
+                {
+                    canBuild =  !_lowerGrid.GetGridObject(x,z).CanBuild();
+                }
+                
                 
                 if (canBuild)
                 {

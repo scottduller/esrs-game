@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -19,10 +20,19 @@ public class AppSceneManager : MonoBehaviour
     /// load scene of the scene int in the project build order
     /// </summary>
     /// <param name="sceneInt"></param>
-    public void loadScene(int sceneInt){
+    public  void LoadScene(int sceneInt){
         try{
             // GlobalValues.updatePlayerPrefs();
             SceneManager.LoadScene (sceneInt);
+        }catch(System.Exception e){
+            Debug.LogError(e);
+        }
+    }
+    
+    public  void LoadScene(string sceneStr){
+        try{
+            // GlobalValues.updatePlayerPrefs();
+            SceneManager.LoadScene (sceneStr);
         }catch(System.Exception e){
             Debug.LogError(e);
         }
@@ -31,15 +41,20 @@ public class AppSceneManager : MonoBehaviour
     /// <summary>
     /// exit app
     /// </summary>
-    public void exitApp(){
+    public void ExitApp(){
         Application.Quit();
     }
 
     /// <summary>
     /// used to wipe playerprefs
     /// </summary>
-    public void wipePlayerPref(){
+    public void WipePlayerPref(){
         // GlobalValues.clearPlayerPrefs();
+    }
+
+    public void Logout()
+    {
+        GlobalValues.LogoutUser();
     }
 
 

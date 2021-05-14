@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Api.Models;
 using Api.Utils;
 using TMPro;
@@ -11,24 +13,10 @@ namespace Api.Services
 {
     public class LevelServices : MonoBehaviour
     {
-        public TMP_InputField levelId;
 
-        public TMP_InputField createLevelName;
-        public TMP_InputField createLevelDesc;
-        public TMP_InputField createLevelVotes;
-        public TMP_InputField createLevelData;
-
-        public TMP_InputField updateLevelId;
-        public TMP_InputField updateLevelName;
-        public TMP_InputField updateLevelDesc;
-        public TMP_InputField updateLevelVotes;
-        public TMP_InputField updateLevelData;
-
-        public TMP_InputField deleteLevelId;
-
-        public void GetAllLevels()
+        public void GetAllLevels(Action<List<Level>> result)
         {
-            StartCoroutine(GetAllLevelsRoutine());
+            StartCoroutine(GetAllLevelsRoutine(result));
         }
 
         public void GetUsersLevels()
@@ -36,65 +24,70 @@ namespace Api.Services
             StartCoroutine(GetUsersLevelsRoutine());
         }
 
-        public void GetLevelById()
+        public void GetLevelById(string levelId)
         {
-            if (!string.IsNullOrEmpty(levelId.text))
+            if (!string.IsNullOrEmpty(levelId))
             {
-                StartCoroutine(GetLevelByIdRoutine());
+                StartCoroutine(GetLevelByIdRoutine(levelId));
             }
         }
 
-        public void CreateLevel()
+        public void CreateLevel(string createLevelName, string createLevelDesc, string createLevelData, Action<bool> result)
         {
-            if (!string.IsNullOrEmpty(createLevelName.text) && !string.IsNullOrEmpty(createLevelData.text))
+            if (!string.IsNullOrEmpty(createLevelName) && !string.IsNullOrEmpty(createLevelData))
             {
-                StartCoroutine(CreateLevelRoutine());
+                StartCoroutine(CreateLevelRoutine(createLevelName,createLevelDesc, "0",createLevelData, result));
             }
         }
 
-        public void UpdateLevel()
+        //need 
+        public void UpdateLevel(string updateLevelId,
+            string updateLevelData = null,
+            string updateLevelVotes = null, string updateLevelName = null, string updateLevelDesc = null)
         {
-            if (!string.IsNullOrEmpty(updateLevelId.text))
+            if (!string.IsNullOrEmpty(updateLevelId))
             {
-                StartCoroutine(UpdateLevelRoutine());
+                StartCoroutine(UpdateLevelRoutine(updateLevelId,updateLevelData, updateLevelVotes, updateLevelName, updateLevelDesc));
             }
         }
 
-        public void DeleteLevel()
+        public void DeleteLevel(string deleteLevelId)
         {
-            if (!string.IsNullOrEmpty(deleteLevelId.text))
+            if (!string.IsNullOrEmpty(deleteLevelId))
             {
-                StartCoroutine(DeleteLevelRoutine());
+                StartCoroutine(DeleteLevelRoutine(deleteLevelId));
             }
         }
 
-        private IEnumerator GetAllLevelsRoutine()
+        private IEnumerator GetAllLevelsRoutine(Action<List<Level>> result)
         {
-            var request = WebServices.Get("levels/");
+            UnityWebRequest request = WebServices.Get("levels/");
             yield return request.SendWebRequest();
 
             if (request.isNetworkError | request.responseCode >= 300)
             {
                 Debug.LogError(request.downloadHandler.text);
                 EditorUtility.DisplayDialog("Get All Levels", request.error, "Ok");
+                result(null);
             }
             else
             {
                 Level[] levels = JsonHelper.FromJson<Level>(request.downloadHandler.text);
-
+                
                 string outStr = "";
-                foreach (var level in levels)
+                foreach (Level level in levels)
                 {
                     outStr += level + Environment.NewLine + "-------------------" + Environment.NewLine;
                 }
 
-                EditorUtility.DisplayDialog("Get All Levels", outStr, "Ok");
+                // EditorUtility.DisplayDialog("Get All Levels", outStr, "Ok");
+                result(levels.ToList());
             }
         }
 
-        private IEnumerator GetLevelByIdRoutine()
+        private IEnumerator GetLevelByIdRoutine(string levelId)
         {
-            var request = WebServices.Get($"levels/{levelId.text}");
+            UnityWebRequest request = WebServices.Get($"levels/{levelId}");
             yield return request.SendWebRequest();
 
             if (request.isNetworkError | request.responseCode >= 300)
@@ -106,38 +99,34 @@ namespace Api.Services
             {
                 Level level = JsonUtility.FromJson<Level>(request.downloadHandler.text);
 
-                EditorUtility.DisplayDialog("Get Level By Id", level.ToString(), "Ok");
+                // EditorUtility.DisplayDialog("Get Level By Id", level.ToString(), "Ok");
             }
         }
 
         private IEnumerator GetUsersLevelsRoutine()
         {
-            var request = WebServices.Get("levels/user");
+            UnityWebRequest request = WebServices.Get("levels/user");
             yield return request.SendWebRequest();
 
             if (request.isNetworkError | request.responseCode >= 300)
             {
                 Debug.LogError(request.downloadHandler.text);
-                EditorUtility.DisplayDialog("Get Users Levels", request.error, "Ok");
+                // EditorUtility.DisplayDialog("Get Users Levels", request.error, "Ok");
             }
             else
             {
                 Level[] levels = JsonHelper.FromJson<Level>(request.downloadHandler.text);
 
-                string outStr = "";
-                foreach (Level level in levels)
-                {
-                    outStr += level + Environment.NewLine + "-------------------" + Environment.NewLine;
-                }
+                string outStr = levels.Aggregate("", (current, level) => current + (level + Environment.NewLine + "-------------------" + Environment.NewLine));
 
-                EditorUtility.DisplayDialog("Get Users Levels", outStr, "Ok");
+                // EditorUtility.DisplayDialog("Get Users Levels", outStr, "Ok");
             }
         }
 
-        private IEnumerator CreateLevelRoutine()
+        private IEnumerator CreateLevelRoutine(string createLevelName, string createLevelDesc, string createLevelVotes, string createLevelData, Action<bool> result)
         {
-            Level newLevel = new Level(createLevelName.text, createLevelDesc.text, createLevelVotes.text,
-                createLevelData.text);
+            Level newLevel = new Level(createLevelName, createLevelDesc, createLevelVotes,
+                createLevelData);
 
             string jsonLevel = JsonUtility.ToJson(newLevel);
 
@@ -148,17 +137,21 @@ namespace Api.Services
             {
                 Debug.LogError(request.downloadHandler.text);
                 EditorUtility.DisplayDialog("Create Level", request.error, "Ok");
+                result(false);
             }
             else
             {
                 Level level = JsonUtility.FromJson<Level>(request.downloadHandler.text);
-                EditorUtility.DisplayDialog("Create Level", level.ToString(), "Ok");
+                // EditorUtility.DisplayDialog("Create Level", level.ToString(), "Ok");
+                result(true);
             }
         }
 
-        private IEnumerator UpdateLevelRoutine()
+        private IEnumerator UpdateLevelRoutine(string updateLevelId,
+            string updateLevelData = null,
+            string updateLevelVotes = null, string updateLevelName = null, string updateLevelDesc = null)
         {
-            var getRequest = WebServices.Get($"levels/{updateLevelId.text}");
+            var getRequest = WebServices.Get($"levels/{updateLevelId}");
             yield return getRequest.SendWebRequest();
 
             if (getRequest.isNetworkError | getRequest.responseCode >= 300)
@@ -170,25 +163,25 @@ namespace Api.Services
             {
                 Level originalLevel = JsonUtility.FromJson<Level>(getRequest.downloadHandler.text);
 
-                string updatedName = string.IsNullOrEmpty(updateLevelName.text)
+                string updatedName = string.IsNullOrEmpty(updateLevelName)
                     ? originalLevel.name
-                    : updateLevelName.text;
-                string updatedDesc = string.IsNullOrEmpty(updateLevelDesc.text)
+                    : updateLevelName;
+                string updatedDesc = string.IsNullOrEmpty(updateLevelDesc)
                     ? originalLevel.description
-                    : updateLevelDesc.text;
-                string updatedVotes = string.IsNullOrEmpty(updateLevelVotes.text)
+                    : updateLevelDesc;
+                string updatedVotes = string.IsNullOrEmpty(updateLevelVotes)
                     ? originalLevel.votes
-                    : updateLevelVotes.text;
-                string updatedLevelData = string.IsNullOrEmpty(updateLevelData.text)
+                    : updateLevelVotes;
+                string updatedLevelData = string.IsNullOrEmpty(updateLevelData)
                     ? originalLevel.levelData
-                    : updateLevelData.text;
+                    : updateLevelData;
 
                 Level newLevel = new Level(updatedName, updatedDesc, updatedVotes,
                     updatedLevelData);
 
                 string jsonLevel = JsonUtility.ToJson(newLevel);
 
-                var request = WebServices.Put($"levels/{updateLevelId.text}", jsonLevel);
+                UnityWebRequest request = WebServices.Put($"levels/{updateLevelId}", jsonLevel);
                 yield return request.SendWebRequest();
 
                 if (request.isNetworkError | request.responseCode >= 300)
@@ -204,9 +197,9 @@ namespace Api.Services
             }
         }
 
-        private IEnumerator DeleteLevelRoutine()
+        private IEnumerator DeleteLevelRoutine(string deleteLevelId)
         {
-            var request = WebServices.Delete($"levels/{deleteLevelId.text}");
+            UnityWebRequest request = WebServices.Delete($"levels/{deleteLevelId}");
             yield return request.SendWebRequest();
 
             if (request.isNetworkError | request.responseCode >= 300)

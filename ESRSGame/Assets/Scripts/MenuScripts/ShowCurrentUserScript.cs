@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts;
 using TMPro;
 using UnityEngine;
 
@@ -16,7 +17,16 @@ public class ShowCurrentUserScript : MonoBehaviour
 
     public void Start()
     {
-        string userToken = PlayerPrefs.GetString("Authorization");
-        _logInText.text = _baseText + userToken;
+        try
+        {
+            _logInText.text = _baseText + GlobalValues.currentUser.username;
+        }
+        catch (Exception e)
+        {
+            _logInText.text = "No User Is Stored In Global Values ERROR";
+            Console.WriteLine(e);
+            throw;
+        }
+        
     }
 }

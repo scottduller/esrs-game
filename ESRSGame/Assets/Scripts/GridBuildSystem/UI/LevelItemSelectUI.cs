@@ -69,12 +69,12 @@ namespace GridBuildSystem.UI
             {
                 Transform btnTransform = Instantiate(_btnTemplate, transform);
                 btnTransform.gameObject.SetActive(true);
-                Debug.Log(placedObject.nameString);
+                // Debug.Log(placedObject.nameString);
                 btnTransform.Find("Text").GetComponent<TextMeshProUGUI>().SetText(placedObject.nameString);
                 btnTransform.Find("Image").GetComponent<Image>().sprite = tempSprite;
                 btnTransform.GetComponent<Button>().onClick.AddListener(() =>
                 {
-                    Debug.Log("Selected: " + placedObject.nameString);
+                    // Debug.Log("Selected: " + placedObject.nameString);
                     gridBuildingSystem.ChangeItem(placedObject);
                     UpdateActiveBuildingTypeButton(placedObject);
                 });

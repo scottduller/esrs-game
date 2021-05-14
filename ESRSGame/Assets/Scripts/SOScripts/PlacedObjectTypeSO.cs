@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 namespace SOScripts
@@ -13,14 +14,14 @@ namespace SOScripts
         public Transform visual;
         public int width;
         public int height;
-        public LevelTheme levelTheme;
+        public ObjectType objectType;
         public bool dragBuild;
 
-        public enum LevelTheme
+        public enum ObjectType
         {
-            TEST = 0,
-            FOREST = 1,
-            CAVE = 2
+            NORMAL = 0,
+            START = 1,
+            END = 2
         }
         
         public static Dir GetNextDir(Dir dir){

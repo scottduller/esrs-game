@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections;
-using Api.Models;
+using Api.Services;
 using Api.Utils;
-using TMPro;
+using Assets.Scripts.Api.Models;
 using UnityEditor;
 using UnityEngine;
 
-namespace Api.Services
+namespace Assets.Scripts.Api.Services
 {
     public class UserServices: MonoBehaviour
     {
@@ -24,7 +24,7 @@ namespace Api.Services
         return this._success;
     }
 
-    public bool LoginUser(string loginUsername, string loginPassword, Action<int> result )
+    public bool LoginUser(string loginUsername, string loginPassword, Action<User> result )
     {
         this._success = false;
         if (!string.IsNullOrEmpty(loginUsername) && !string.IsNullOrEmpty(loginPassword))
@@ -73,7 +73,7 @@ namespace Api.Services
         }
     }
 
-    private IEnumerator LoginUserRoutine(string loginUsername, string loginPassword, Action<int> result)
+    private IEnumerator LoginUserRoutine(string loginUsername, string loginPassword, Action<User> result)
     {
         User user = new User(loginUsername, loginPassword);
 
@@ -85,16 +85,15 @@ namespace Api.Services
 
         if (request.isNetworkError | request.responseCode >= 300)
         {
-            result(1);
             Debug.LogError(request.downloadHandler.text);
             EditorUtility.DisplayDialog("Login User", request.error, "Ok");
         }
         else
         {
-            result(0);
             User loggedInUser = JsonUtility.FromJson<User>(request.downloadHandler.text);
+            result(loggedInUser);
             WebServices.AuthString = loggedInUser.token;
-            EditorUtility.DisplayDialog("Login User", loggedInUser.ToString(), "Ok");
+            // EditorUtility.DisplayDialog("Login User", loggedInUser.ToString(), "Ok");
             
         }
     }

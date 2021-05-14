@@ -1,5 +1,8 @@
 ﻿using System;
 using Api.Services;
+using Assets.Scripts;
+using Assets.Scripts.Api.Models;
+using Assets.Scripts.Api.Services;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -41,22 +44,13 @@ namespace MenuScripts
             
         }
 
-        private void Result(int flag)
+        private void Result(User user)
         {
-            switch (flag)
-            {
-                case 0:
-                    appSceneManager.loadScene(mainMenuSceneNumber);
-                    break;
-                case 1: 
-                    Debug.Log("Invalid User Credentials");
-                    break;
-                default:
-                    Debug.Log("Unkown Flag");
-                    break;
-                    
-            }
+            appSceneManager.LoadScene(mainMenuSceneNumber);
+            GlobalValues.currentUser = user;
+
+        }
             
         }
     }
-}
+

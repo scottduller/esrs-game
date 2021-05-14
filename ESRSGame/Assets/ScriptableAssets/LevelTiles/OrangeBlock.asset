@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ef5af70ebb84304996f5e06599715c1, type: 3}
   m_Name: OrangeBlock
   m_EditorClassIdentifier: 
-  nameString: OrangeBlock
+  nameString: Block Orange
   prefab: {fileID: 5140958657712553642, guid: 241527493312c19499e0bebe8d0fac0e, type: 3}
   visual: {fileID: 4945135105507578675, guid: ba283f94e7a239148b12ec2b550496a3, type: 3}
   width: 1

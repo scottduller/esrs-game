@@ -1,4 +1,5 @@
 ﻿using System;
+using Assets.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,8 @@ namespace GridBuildSystem.UI
 
         private void Start()
         {
+            Debug.Log(LevelBuilderManager.Instance);
+            
             _saveOptionsPane = transform.Find("LevelSavePanel").gameObject;
         
             _saveOptionsPane.transform.Find("CloseBtn").GetComponent<Button>().onClick.AddListener(CloseMenu);
@@ -23,9 +26,9 @@ namespace GridBuildSystem.UI
         {
             string title = _saveOptionsPane.transform.Find("TitleInput").GetComponent<TMP_InputField>().text;
             string desc = _saveOptionsPane.transform.Find("DescInput").GetComponent<TMP_InputField>().text;
-            if (title != string.Empty && desc != String.Empty)
+            if (title != string.Empty && desc != string.Empty)
             {
-                LevelBuilderManager.Instance.SaveLevel(title,"test",desc);
+                LevelBuilderManager.Instance.SaveLevel(title,desc);
                 CloseMenu();
             }
             else
@@ -44,8 +47,13 @@ namespace GridBuildSystem.UI
     
         public void OpenMenu()
         {
-            _saveOptionsPane.SetActive(true);
-        
+            bool valid = LevelBuilderManager.Instance.CheckForRequirements();
+            Debug.Log(valid);
+            if (LevelBuilderManager.Instance.CheckForRequirements())
+            {
+                _saveOptionsPane.SetActive(true);
+            }
+
         }
 
     }

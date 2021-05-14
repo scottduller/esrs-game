@@ -34,10 +34,11 @@ namespace GridBuildSystem
         {
             if(gridBuildingSystem) gridBuildingSystem.OnSelectedChanged -= Instance_OnSelectedChanged;
 
-            RefreshVisual();
+            
             gridBuildingSystem = e.ActiveLayer;
             gridBuildingSystem.OnSelectedChanged += Instance_OnSelectedChanged;
             GridYOffset = gridBuildingSystem.GetGridYOffset(); 
+            RefreshVisual();
         }
 
 
@@ -57,6 +58,21 @@ namespace GridBuildSystem
 
             transform.rotation = Quaternion.Lerp(transform.rotation, gridBuildingSystem.GetPlacedObjectRotation(),
                 Time.deltaTime * 15f);
+            
+            if (Input.GetButton("Fire1") && gridBuildingSystem.GetIsDragBuilder())
+            {
+                float gridCellSize = gridBuildingSystem.GetCellSize();
+                Vector2 sizeXZ = gridBuildingSystem.GetSizeMulti();
+                Vector3 newLocal = new Vector3(sizeXZ.x < 0 ? gridCellSize : 0, 0 , sizeXZ.y < 0 ? gridCellSize : 0);
+                Vector3 visualSize = new Vector3(sizeXZ.x, _visual.localScale.y, sizeXZ.y);
+                _visual.localPosition = newLocal;
+                _visual.localScale = visualSize;
+            }
+
+            if (Input.GetButtonUp("Fire1") && gridBuildingSystem.GetIsDragBuilder())
+            {
+                RefreshVisual();
+            }
         }
 
         private void RefreshVisual()
@@ -76,15 +92,16 @@ namespace GridBuildSystem
                 _visual.parent = transform;
                 
                 _visual.localEulerAngles = Vector3.zero;
-                
+                // Debug.Log(gridBuildingSystem.GetIsDragBuilder());
                 if (Input.GetButton("Fire1") && gridBuildingSystem.GetIsDragBuilder())
                 {
-                    float gridCellSize = gridBuildingSystem.GetCellSize();
-                    Vector2 sizeXZ = gridBuildingSystem.GetSizeMulti();
-                    Vector3 newLocal = new Vector3(sizeXZ.x < 0 ? gridCellSize : 0, 0 , sizeXZ.y < 0 ? gridCellSize : 0);
-                    Vector3 visualSize = new Vector3(sizeXZ.x, _visual.localScale.y, sizeXZ.y);
-                    _visual.localPosition = newLocal;
-                    _visual.localScale = visualSize;
+                    // Debug.Log("isGridBuilder");
+                    // float gridCellSize = gridBuildingSystem.GetCellSize();
+                    // Vector2 sizeXZ = gridBuildingSystem.GetSizeMulti();
+                    // Vector3 newLocal = new Vector3(sizeXZ.x < 0 ? gridCellSize : 0, 0 , sizeXZ.y < 0 ? gridCellSize : 0);
+                    // Vector3 visualSize = new Vector3(sizeXZ.x, _visual.localScale.y, sizeXZ.y);
+                    // _visual.localPosition = newLocal;
+                    // _visual.localScale = visualSize;
                 }
                 else
                 {

@@ -30,9 +30,14 @@ namespace GridBuildSystem
             return _placedObjectTypeSo.GetGridPositionList(_origin, _dir);
         }
 
+        public PlacedObjectTypeSO getPlacedObjectTypeSO()
+        {
+            return _placedObjectTypeSo;
+        }
+
         public string DataToString()
         {
-            return LevelBuilderManager.Instance.getIndexFromSo(_placedObjectTypeSo)+","+ UtilsClass.Vector3ToString(transform.position) +","+ UtilsClass.QuaternionToString(transform.rotation);
+            return LevelBuilderManager.Instance.GETIndexFromSo(_placedObjectTypeSo)+","+ UtilsClass.Vector3ToString(transform.position) +","+ UtilsClass.QuaternionToString(transform.rotation);
         }
         public void DestroySelf()
         {
