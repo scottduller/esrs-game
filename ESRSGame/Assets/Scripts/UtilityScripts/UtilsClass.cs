@@ -8,16 +8,17 @@ using UnityEngine.EventSystems;
 public static class UtilsClass
 {
     private static Camera _mainCamera;
+    private static EventSystem _eventSystem;
 
     public static Vector3 GetMouseWorldPosition()
     {
         if (_mainCamera == null) _mainCamera = Camera.main;
-
-        Ray castPoint = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (_eventSystem == null) _eventSystem = EventSystem.current;
+        Ray castPoint = _mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(castPoint, out hit, Mathf.Infinity))
         {
-            if (!EventSystem.current.IsPointerOverGameObject())
+            if (!_eventSystem.IsPointerOverGameObject())
             {
                 return hit.point;
             }

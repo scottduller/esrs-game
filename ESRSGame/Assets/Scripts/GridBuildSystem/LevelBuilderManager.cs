@@ -134,14 +134,14 @@ namespace GridBuildSystem
             
             
             if (interactiveItems
-                .FindAll(x => x.getPlacedObjectTypeSO().objectType == PlacedObjectTypeSO.ObjectType.START).Count != 1)
+                .FindAll(x => x.GETPlacedObjectTypeSo().objectType == PlacedObjectTypeSO.ObjectType.START).Count != 1)
             {
                 Debug.Log("NEEDS 1 START POS");
                 valid = false;
             }
 
             if (interactiveItems
-                    .FindAll(x => x.getPlacedObjectTypeSO().objectType == PlacedObjectTypeSO.ObjectType.END).Count ==
+                    .FindAll(x => x.GETPlacedObjectTypeSo().objectType == PlacedObjectTypeSO.ObjectType.END).Count ==
                 1) return valid;
             Debug.Log("NEEDS 1 END POS");
             valid = false;

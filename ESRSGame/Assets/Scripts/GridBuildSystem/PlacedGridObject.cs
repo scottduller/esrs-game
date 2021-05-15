@@ -30,9 +30,14 @@ namespace GridBuildSystem
             return _placedObjectTypeSo.GetGridPositionList(_origin, _dir);
         }
 
-        public PlacedObjectTypeSO getPlacedObjectTypeSO()
+        public PlacedObjectTypeSO GETPlacedObjectTypeSo()
         {
             return _placedObjectTypeSo;
+        }
+
+        public void SetPlacedObjectTypeSo( PlacedObjectTypeSO placedObjectTypeSo)
+        {
+            _placedObjectTypeSo = placedObjectTypeSo;
         }
 
         public string DataToString()

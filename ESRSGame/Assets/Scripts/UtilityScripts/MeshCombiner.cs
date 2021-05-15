@@ -2,24 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using GridBuildSystem;
 using UnityEngine;
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 public class MeshCombiner : MonoBehaviour
 {
-    public bool UseWield;
     private MeshFilter _meshFilter;
     private MeshRenderer _meshRenderer;
     private Renderer _renderer;
-    public GameObject target;
-    public enum MergeType
-    {
-        BASIC =0,
-        ADVANCE = 1
 
-    }
-
-    [SerializeField] MergeType _mergeType;
     private void Awake()
     {
         _meshFilter = GetComponent<MeshFilter>();
@@ -27,29 +19,10 @@ public class MeshCombiner : MonoBehaviour
         _renderer = GetComponent<Renderer>();
     } 
 
-    void Update()
-    {
-        if (!Input.GetKeyDown(KeyCode.Alpha9)) return;
-        
-        switch (_mergeType)
-        {
-            case MergeType.BASIC:
-                BasicMerge();
-                break;
-            case MergeType.ADVANCE:
-                AdvancedMerge();
-                break;
-            default:
-                Debug.LogError("Unkown Merge type",this);
-                break;
-                
-            
-        }
-
-    }
 
 
-    private void BasicMerge()
+
+    public void BasicMerge(GameObject target)
     { 
         Mesh mesh = _meshFilter.sharedMesh;
         if (mesh == null)
@@ -88,15 +61,26 @@ public class MeshCombiner : MonoBehaviour
     
     
     
-    private void AdvancedMerge()
+    public void AdvancedMerge(GameObject target, bool autoWield , float threshold = 0.1f, float bucketStep = 0.01f)
     { 
 
         // All children of target
-        MeshFilter[] filters = target.GetComponentsInChildren<MeshFilter>(false);
+        PlacedGridObject[] placedGridObjects = target.GetComponentsInChildren<PlacedGridObject>();
+        List<PlacedGridObject> placedGridObjectsListWithMerge = placedGridObjects.ToList().FindAll(x => x.GETPlacedObjectTypeSo().MeshMerge);
+        List<MeshFilter> filterList = new List<MeshFilter>();
+        List<MeshRenderer> meshRendererList = new List<MeshRenderer>();
+        foreach (Transform t in placedGridObjectsListWithMerge.ConvertAll(x=> x.transform)) 
+        {
+            filterList.AddRange((t.GetComponentsInChildren<MeshFilter>(false)).ToList());
+            meshRendererList.AddRange((t.GetComponentsInChildren<MeshRenderer>(false)).ToList());
+        }
+
+
+        MeshFilter[] filters = filterList.ToArray();
         Debug.Log("Merging " + (filters.Length-1) + " meshes... " );
         //All the meshes in our children
         List<Material> materials = new List<Material>();
-        MeshRenderer[] renderers = target.GetComponentsInChildren<MeshRenderer>(false);
+        MeshRenderer[] renderers = meshRendererList.ToArray();
         Debug.Log("founds " + (renderers.Length-1) + " renderers... " );
         foreach (MeshRenderer renderer in renderers)
         {
@@ -160,8 +144,8 @@ public class MeshCombiner : MonoBehaviour
         foreach (Mesh mesh in submeshes)
         {
             CombineInstance ci = new CombineInstance ();
-            if(UseWield){
-                ci.mesh = AutoWeld(mesh,0.1f,0.01f);
+            if(autoWield){
+                ci.mesh = AutoWeld(mesh, threshold,bucketStep);
             }
             else
             {
@@ -180,7 +164,10 @@ public class MeshCombiner : MonoBehaviour
         _meshFilter.sharedMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
         _meshFilter.sharedMesh = finalMesh;
         Debug.Log ("Final mesh has " + submeshes.Count + " materials.");
-        target.SetActive(false);
+        foreach (GameObject g in placedGridObjectsListWithMerge.ConvertAll(x=>x.gameObject))
+        {
+            Destroy(g);
+        }
         AddColider();
 
 
@@ -188,7 +175,7 @@ public class MeshCombiner : MonoBehaviour
         
     }
     
-       public static Mesh AutoWeld (Mesh mesh, float threshold, float bucketStep) {
+    public static Mesh AutoWeld (Mesh mesh, float threshold, float bucketStep) {
      Vector3[] oldVertices = mesh.vertices;
      Vector3[] newVertices = new Vector3[oldVertices.Length];
      int[] old2new = new int[oldVertices.Length];
