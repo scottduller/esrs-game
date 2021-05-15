@@ -1,7 +1,10 @@
-﻿using Api.Models;
+﻿using System;
+using Api.Models;
 using Assets.Scripts.Api.Models;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// static class used to store data between scenes, additionally interacts with playerPrefs
@@ -13,11 +16,28 @@ public static class GlobalValues
     public static Level currentLevel;
 
 
+    public static EventHandler<OnUIWindowChangeEventArgs> onUIWindowChanged;
 
+    public class OnUIWindowChangeEventArgs : EventArgs
+    {
+        public OnUIWindowChangeEventArgs(bool value)
+        {
+            isWindowOpen = value;
+        } 
+        
+        public readonly bool isWindowOpen;
+    }
+
+    public static void UpdateUser(User user)
+    {
+        PlayerPrefs.SetString("UserId", user.id);
+        currentUser = user;
+    }
 
     public static void LogoutUser()
     {
         PlayerPrefs.DeleteKey("Authorization");
+        PlayerPrefs.DeleteKey("UserId");
         currentUser = null;
         try{
             // GlobalValues.updatePlayerPrefs();

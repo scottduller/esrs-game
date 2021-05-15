@@ -16,6 +16,7 @@ namespace SOScripts
         public int height;
         public ObjectType objectType;
         public bool dragBuild;
+        public bool MeshMerge;
 
         public enum ObjectType
         {

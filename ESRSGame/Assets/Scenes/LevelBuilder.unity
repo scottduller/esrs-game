@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -691,14 +691,14 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1757467616}
-        m_MethodName: loadScene
-        m_Mode: 3
+        m_MethodName: LoadScene
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 3
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: MainMenu
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &127022394
@@ -938,7 +938,7 @@ Camera:
     height: 1
   near clip plane: 2.97
   far clip plane: 1000
-  field of view: 81.40577
+  field of view: 75.60841
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -964,7 +964,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 214931172}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 9.917785, y: 10.000001, z: 18.374273}
+  m_LocalPosition: {x: 9.925893, y: 10.000001, z: 18.043108}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2481,8 +2481,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9938e8fa13ac08b4f8fa6bfefac269cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filePath: Assets/LevelFiles/
-  testNameRead: 
   _PlacedListSo: {fileID: 11400000, guid: ef1e55a6033b1f94c9d64e70b51c66f9, type: 2}
   instantLoad: 0
 --- !u!4 &755252678
@@ -3477,7 +3475,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2075851847}
   m_HandleRect: {fileID: 2075851846}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -4725,7 +4723,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 2113834940}
   m_Lens:
-    FieldOfView: 81.40577
+    FieldOfView: 75.60841
     OrthographicSize: 30
     NearClipPlane: 2.97
     FarClipPlane: 1000
@@ -4747,7 +4745,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1609989711}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 9.917785, y: 10.000001, z: 18.374273}
+  m_LocalPosition: {x: 9.925893, y: 10.000001, z: 18.043108}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2038511612}

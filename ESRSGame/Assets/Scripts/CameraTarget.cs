@@ -5,8 +5,10 @@ using Cinemachine;
 using UnityEngine;
 using CodeMonkey.Utils;
 
-public class CameraTarget : MonoBehaviour {
+public class CameraTarget : MonoBehaviour
+{
 
+    private bool canMove;
     public enum Axis {
         XZ,
         XY,
@@ -27,6 +29,11 @@ public class CameraTarget : MonoBehaviour {
     {
         try
         {
+            canMove = true;
+            GlobalValues.onUIWindowChanged += (object sender, GlobalValues.OnUIWindowChangeEventArgs eventArgs) =>
+            {
+                canMove = !eventArgs.isWindowOpen;
+            };
             _camTransform = vCam.GetComponent<Transform>();
         }
         catch (Exception e)
@@ -39,6 +46,7 @@ public class CameraTarget : MonoBehaviour {
 
 
     private void FixedUpdate() {
+        if (!canMove) return;
         CameraMovement();
         CameraScrolling();
         CameraRotation();

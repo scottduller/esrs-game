@@ -41,11 +41,11 @@ namespace Assets.Scripts.Api.Services
         StartCoroutine(GetAllUsersRoutine());
     }
 
-    public void GetUserById(string userId)
+    public void GetUserById(string userId, Action<User> result)
     {
         if (!string.IsNullOrEmpty(userId))
         {
-            StartCoroutine(GetUserByIdRoutine(userId));
+            StartCoroutine(GetUserByIdRoutine(userId, result));
         }
     }
 
@@ -98,7 +98,7 @@ namespace Assets.Scripts.Api.Services
         }
     }
 
-    private IEnumerator GetUserByIdRoutine(string userId)
+    private IEnumerator GetUserByIdRoutine(string userId, Action<User> result)
     {
         var request = WebServices.Get($"users/{userId}");
         yield return request.SendWebRequest();
@@ -107,13 +107,15 @@ namespace Assets.Scripts.Api.Services
         {
             Debug.LogError(request.downloadHandler.text);
             EditorUtility.DisplayDialog("Get User By Id", request.error, "Ok");
+            result(null);
         }
         else
         {
             User user = JsonUtility.FromJson<User>(request.downloadHandler.text);
 
-            EditorUtility.DisplayDialog("Get User By Id", user.ToString(), "Ok");
+            // EditorUtility.DisplayDialog("Get User By Id", user.ToString(), "Ok");
             this._success = true;
+            result(user);
         }
     }
 

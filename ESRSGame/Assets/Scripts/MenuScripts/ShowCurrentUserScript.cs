@@ -25,7 +25,6 @@ public class ShowCurrentUserScript : MonoBehaviour
         {
             _logInText.text = "No User Is Stored In Global Values ERROR";
             Console.WriteLine(e);
-            throw;
         }
         
     }

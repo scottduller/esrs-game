@@ -30,6 +30,20 @@ namespace MenuScripts
             }
         }
 
+        private void Start()
+        {
+            if(PlayerPrefs.HasKey("UserId")) userServices.GetUserById(PlayerPrefs.GetString("UserId"), user =>
+            {
+                if (user != null) this.Result(user);
+                else
+                {
+                    Debug.Log("AUTH TOKEN EXPIRED");
+                }
+            });
+            return;
+            
+        }
+
         public void LoginUser()
         {
             if (!string.IsNullOrEmpty(_username.text) || !string.IsNullOrEmpty(_password.text))
@@ -47,7 +61,7 @@ namespace MenuScripts
         private void Result(User user)
         {
             appSceneManager.LoadScene(mainMenuSceneNumber);
-            GlobalValues.currentUser = user;
+            GlobalValues.UpdateUser(user);
 
         }
             

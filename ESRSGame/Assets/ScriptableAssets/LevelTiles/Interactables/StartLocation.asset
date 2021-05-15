@@ -19,3 +19,4 @@ MonoBehaviour:
   height: 1
   objectType: 1
   dragBuild: 0
+  MeshMerge: 0

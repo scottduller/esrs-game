@@ -12,14 +12,9 @@ namespace GridBuildSystem.UI
 
         private void Start()
         {
-            Debug.Log(LevelBuilderManager.Instance);
-            
             _saveOptionsPane = transform.Find("LevelSavePanel").gameObject;
-        
             _saveOptionsPane.transform.Find("CloseBtn").GetComponent<Button>().onClick.AddListener(CloseMenu);
-        
             _saveOptionsPane.transform.Find("SubmitBtn").GetComponent<Button>().onClick.AddListener(Submit);
-        
         }
 
         private void Submit()
@@ -40,6 +35,7 @@ namespace GridBuildSystem.UI
 
         private void CloseMenu()
         {
+            GlobalValues.onUIWindowChanged.Invoke(this, new GlobalValues.OnUIWindowChangeEventArgs(false));
             _saveOptionsPane.SetActive(false);
             //EXIT TO MAIN MENU
         
@@ -49,10 +45,9 @@ namespace GridBuildSystem.UI
         {
             bool valid = LevelBuilderManager.Instance.CheckForRequirements();
             Debug.Log(valid);
-            if (LevelBuilderManager.Instance.CheckForRequirements())
-            {
-                _saveOptionsPane.SetActive(true);
-            }
+            if (!LevelBuilderManager.Instance.CheckForRequirements()) return;
+            GlobalValues.onUIWindowChanged.Invoke(this, new GlobalValues.OnUIWindowChangeEventArgs(true));
+            _saveOptionsPane.SetActive(true);
 
         }
 

@@ -17,5 +17,6 @@ MonoBehaviour:
   visual: {fileID: 4945135105507578675, guid: ba283f94e7a239148b12ec2b550496a3, type: 3}
   width: 1
   height: 1
-  levelTheme: 0
+  objectType: 0
   dragBuild: 1
+  MeshMerge: 1

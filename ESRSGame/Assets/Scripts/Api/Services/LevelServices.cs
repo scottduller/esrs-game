@@ -19,9 +19,9 @@ namespace Api.Services
             StartCoroutine(GetAllLevelsRoutine(result));
         }
 
-        public void GetUsersLevels()
+        public void GetUsersLevels(Action<List<Level>> result)
         {
-            StartCoroutine(GetUsersLevelsRoutine());
+            StartCoroutine(GetUsersLevelsRoutine(result));
         }
 
         public void GetLevelById(string levelId)
@@ -103,7 +103,7 @@ namespace Api.Services
             }
         }
 
-        private IEnumerator GetUsersLevelsRoutine()
+        private IEnumerator GetUsersLevelsRoutine(Action<List<Level>> result)
         {
             UnityWebRequest request = WebServices.Get("levels/user");
             yield return request.SendWebRequest();
@@ -111,14 +111,15 @@ namespace Api.Services
             if (request.isNetworkError | request.responseCode >= 300)
             {
                 Debug.LogError(request.downloadHandler.text);
+                result(null);
                 // EditorUtility.DisplayDialog("Get Users Levels", request.error, "Ok");
             }
             else
             {
                 Level[] levels = JsonHelper.FromJson<Level>(request.downloadHandler.text);
 
-                string outStr = levels.Aggregate("", (current, level) => current + (level + Environment.NewLine + "-------------------" + Environment.NewLine));
-
+                // string outStr = levels.Aggregate("", (current, level) => current + (level + Environment.NewLine + "-------------------" + Environment.NewLine));
+                result(levels.ToList());
                 // EditorUtility.DisplayDialog("Get Users Levels", outStr, "Ok");
             }
         }
