@@ -100,16 +100,18 @@ namespace LevelFileSystem
                     levels.Sort((x, y) => (int.Parse(y.votes).CompareTo(int.Parse(x.votes))));
                     break;
                 case 3:
-                    levels.Sort((x, y) => (string.Compare(x.name, y.name, StringComparison.Ordinal)));
+                    levels.Sort((x, y) => (string.Compare(y.name, x.name, StringComparison.CurrentCultureIgnoreCase)));
+
                     break;
                 case 4: 
-                    levels.Sort((x, y) => (string.Compare(y.name, x.name, StringComparison.Ordinal)));
+                    levels.Sort((x, y) => (string.Compare(x.name, y.name, StringComparison.CurrentCultureIgnoreCase)));
+
                     break;
                 case 5:
-                    levels.Sort((x, y) => (string.Compare(x.createdAt, y.updatedAt, StringComparison.Ordinal)));
+                    levels.Sort((x, y) => (string.Compare(x.createdAt, y.updatedAt, StringComparison.CurrentCultureIgnoreCase)));
                     break;
                 case 6:
-                    levels.Sort((x, y) => (string.Compare(y.createdAt, x.updatedAt, StringComparison.Ordinal)));
+                    levels.Sort((x, y) => (string.Compare(y.createdAt, x.updatedAt, StringComparison.CurrentCultureIgnoreCase)));
                     break;
                 default:
                     break;
