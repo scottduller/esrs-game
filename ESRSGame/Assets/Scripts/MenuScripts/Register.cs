@@ -1,6 +1,7 @@
 ﻿using System;
 using Api.Services;
 using Assets.Scripts.Api.Services;
+using Assets.Scripts.Api.Models;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -10,7 +11,7 @@ namespace MenuScripts
     public class Register : MonoBehaviour
     {
         public UserServices userServices;
-
+        public AppSceneManager appSceneManager;
         private TMP_InputField _username, _password, _confirmPassword;
         private void Awake()
         {
@@ -34,7 +35,7 @@ namespace MenuScripts
                 if (_password.text == _confirmPassword.text)
                 {
 
-                        userServices.RegisterUser(_username.text, _password.text);
+                        userServices.RegisterUser(_username.text, _password.text, (User user) => {if (user != null) appSceneManager.LoadScene(1);});
                 }
                 else
                 {

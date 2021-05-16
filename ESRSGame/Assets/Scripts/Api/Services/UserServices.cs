@@ -14,12 +14,12 @@ namespace Assets.Scripts.Api.Services
 
  
         
-    public bool RegisterUser(string registerUsername, string registerPassword)
+    public bool RegisterUser(string registerUsername, string registerPassword, Action<User> result)
     {
         this._success = false;
         if (!string.IsNullOrEmpty(registerUsername) && !string.IsNullOrEmpty(registerPassword))
         {
-            StartCoroutine(RegisterUserRoutine(registerUsername, registerPassword));
+            StartCoroutine(RegisterUserRoutine(registerUsername, registerPassword, result));
         }
         return this._success;
     }
@@ -49,7 +49,7 @@ namespace Assets.Scripts.Api.Services
         }
     }
 
-    private  IEnumerator RegisterUserRoutine(string registerUsername, string registerPassword)
+    private  IEnumerator RegisterUserRoutine(string registerUsername, string registerPassword, Action<User> result)
     {
         var user = new User(registerUsername, registerPassword);
 
@@ -62,13 +62,15 @@ namespace Assets.Scripts.Api.Services
         {
             Debug.LogError(request.downloadHandler.text);
             EditorUtility.DisplayDialog("Register User", request.error, "Ok");
+            result(null);
         }
         else
         {
 
 
             User registeredUser = JsonUtility.FromJson<User>(request.downloadHandler.text);
-            EditorUtility.DisplayDialog("Register User", registeredUser.ToString(), "Ok");
+            // EditorUtility.DisplayDialog("Register User", registeredUser.ToString(), "Ok");
+            result(registeredUser);
 
         }
     }

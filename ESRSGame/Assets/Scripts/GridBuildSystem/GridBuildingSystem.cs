@@ -427,16 +427,15 @@ namespace GridBuildSystem
     }
 }
 
-[CustomEditor(typeof(GridBuildingSystem))]
-public class GridBuilderEditor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        base.OnInspectorGUI();
-        var script = target as GridBuildingSystem;
-        GUILayout.Label("  Interactable: "+script.Interactable.ToString());
-        
-
- 
-    }
-}
+// [CustomEditor(typeof(GridBuildingSystem))]
+// public class GridBuilderEditor : Editor
+// {
+//     public override void OnInspectorGUI()
+//     {
+//         base.OnInspectorGUI();
+//         GUILayout.Label("  Interactable: "+(target is GridBuildingSystem script && script.Interactable).ToString());
+//         
+//
+//  
+//     }
+// }

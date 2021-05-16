@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Enemy
+  - Weapon
+  - Bullet
+  - FirePoint
+  - Effect
+  - CMCam
   layers:
   - Default
   - TransparentFX

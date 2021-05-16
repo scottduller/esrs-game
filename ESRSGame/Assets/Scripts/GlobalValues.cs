@@ -16,17 +16,6 @@ public static class GlobalValues
     public static Level currentLevel;
 
 
-    public static EventHandler<OnUIWindowChangeEventArgs> onUIWindowChanged;
-
-    public class OnUIWindowChangeEventArgs : EventArgs
-    {
-        public OnUIWindowChangeEventArgs(bool value)
-        {
-            isWindowOpen = value;
-        } 
-        
-        public readonly bool isWindowOpen;
-    }
 
     public static void UpdateUser(User user)
     {

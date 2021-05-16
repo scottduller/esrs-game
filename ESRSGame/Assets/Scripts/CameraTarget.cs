@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 using CodeMonkey.Utils;
+using GameScripts;
 
 public class CameraTarget : MonoBehaviour
 {
@@ -30,7 +31,7 @@ public class CameraTarget : MonoBehaviour
         try
         {
             canMove = true;
-            GlobalValues.onUIWindowChanged += (object sender, GlobalValues.OnUIWindowChangeEventArgs eventArgs) =>
+            GameEventManager.onUIWindowChanged += (object sender, GameEventManager.OnUIWindowChangeEventArgs eventArgs) =>
             {
                 canMove = !eventArgs.isWindowOpen;
             };

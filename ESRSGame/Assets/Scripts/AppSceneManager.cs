@@ -33,6 +33,7 @@ public class AppSceneManager : MonoBehaviour
         try{
             // GlobalValues.updatePlayerPrefs();
             SceneManager.LoadScene (sceneStr);
+            Time.timeScale = 1;
         }catch(System.Exception e){
             Debug.LogError(e);
         }
@@ -52,10 +53,21 @@ public class AppSceneManager : MonoBehaviour
         // GlobalValues.clearPlayerPrefs();
     }
 
+    public void ReloadScene()
+    {
+        Time.timeScale = 1;
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
     public void Logout()
     {
+        Time.timeScale = 1;
+
         GlobalValues.LogoutUser();
     }
+    
+    
 
 
     

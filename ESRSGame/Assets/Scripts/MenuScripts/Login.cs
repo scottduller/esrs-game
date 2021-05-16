@@ -34,6 +34,7 @@ namespace MenuScripts
         {
             if(PlayerPrefs.HasKey("UserId")) userServices.GetUserById(PlayerPrefs.GetString("UserId"), user =>
             {
+                Debug.Log("FOUND KEY");
                 if (user != null) this.Result(user);
                 else
                 {

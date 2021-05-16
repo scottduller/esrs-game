@@ -1,5 +1,6 @@
 ﻿using System;
 using Assets.Scripts;
+using GameScripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -35,7 +36,7 @@ namespace GridBuildSystem.UI
 
         private void CloseMenu()
         {
-            GlobalValues.onUIWindowChanged.Invoke(this, new GlobalValues.OnUIWindowChangeEventArgs(false));
+            GameEventManager.onUIWindowChanged.Invoke(this, new GameEventManager.OnUIWindowChangeEventArgs(false));
             _saveOptionsPane.SetActive(false);
             //EXIT TO MAIN MENU
         
@@ -46,7 +47,7 @@ namespace GridBuildSystem.UI
             bool valid = LevelBuilderManager.Instance.CheckForRequirements();
             Debug.Log(valid);
             if (!LevelBuilderManager.Instance.CheckForRequirements()) return;
-            GlobalValues.onUIWindowChanged.Invoke(this, new GlobalValues.OnUIWindowChangeEventArgs(true));
+            GameEventManager.onUIWindowChanged.Invoke(this, new GameEventManager.OnUIWindowChangeEventArgs(true));
             _saveOptionsPane.SetActive(true);
 
         }
