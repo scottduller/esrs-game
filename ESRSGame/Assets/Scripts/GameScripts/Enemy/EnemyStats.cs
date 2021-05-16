@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace GameScripts.Enemy
@@ -14,6 +15,20 @@ namespace GameScripts.Enemy
         public float startingHealth;
         public float speed;
         private Image healthBar;
+        
+        private void Awake()
+        {
+            transform.position += new Vector3(0.5f, 0.1f, 0.5f);
+
+            healthBar = transform.Find("Canvas/HealthBar/Image").GetComponent<Image>();
+            if (SceneManager.GetActiveScene().name.Equals("LevelBuilder"))
+            {
+                transform.GetComponent<Collider>().enabled = false;
+                this.enabled = false;
+                healthBar.transform.parent.gameObject.SetActive(false);
+
+            }
+        }
         private void Start()
         {
             healthBar = transform.Find("Canvas/HealthBar/Image").GetComponent<Image>();

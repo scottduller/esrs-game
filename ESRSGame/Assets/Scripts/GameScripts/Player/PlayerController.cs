@@ -18,7 +18,7 @@ namespace GameScripts.Player
         private PlayerStats _playerStats;
         private WeaponSO _currentWeapon;
         private Rigidbody _rigidbody;
-        private Transform _firePoint;
+        public Transform _firePoint;
         private float _fireCountDown;
         private bool _canFire = false;
         private bool isUIOpen;
@@ -48,10 +48,11 @@ namespace GameScripts.Player
 
         private void OnWeaponPickup(object sender, GameEventManager.OnWeaponPickUpEventArgs e)
         {
-            
+            if(_firePoint)  _firePoint.tag = "Untagged";
                 this._currentWeapon = e.weaponSo;
-                this._firePoint = transform.GetComponentsInChildren<Transform>()?.ToList()
+                this._firePoint = transform.GetComponentsInChildren<Transform>().ToList()
                     .Find(x => x.CompareTag("FirePoint"));
+                
         }
 
         private void FixedUpdate()
@@ -76,6 +77,7 @@ namespace GameScripts.Player
 
         private void Update()
         {            
+            if (!_currentWeapon) return;
             if (_fireCountDown <= 0f)
             {
                 _canFire = true;
@@ -99,7 +101,7 @@ namespace GameScripts.Player
             if (_canFire)
             {
                 _canFire = false;
-                GameObject bullet = (GameObject)Instantiate(_currentWeapon.bulletPrefab, _firePoint.transform.position, Quaternion.identity);
+                GameObject bullet = (GameObject)Instantiate(_currentWeapon.bulletPrefab, this._firePoint.transform.position, Quaternion.identity);
                 
                 
                 bullet.GetComponent<Bullet>()?.GetGunStats(direction, _currentWeapon.damage, _currentWeapon.radius,

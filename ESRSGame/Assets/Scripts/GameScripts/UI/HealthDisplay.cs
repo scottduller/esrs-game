@@ -16,13 +16,15 @@ public class HealthDisplay : MonoBehaviour
     void Start()
     {
         startColor = healthBoxPrefab.transform.Find("Image").GetComponent<Image>().color;
-        healthBoxes = new ArrayList();
+       
 
     }
 
     public void setHealth(int health)
     {
+        healthBoxes = new ArrayList();
         currentHealth = health;
+        Debug.Log(healthBoxPrefab);
         for(int i = 0; i< currentHealth; i++)
         {
             healthBoxes.Add(Instantiate(healthBoxPrefab, transform));

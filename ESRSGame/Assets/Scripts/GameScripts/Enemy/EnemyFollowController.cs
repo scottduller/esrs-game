@@ -1,5 +1,7 @@
-﻿using GameScripts.Player;
+﻿using System;
+using GameScripts.Player;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GameScripts.Enemy
 {
@@ -10,6 +12,16 @@ namespace GameScripts.Enemy
 
         [HideInInspector]
         private float speed;
+
+        private void Awake()
+        {
+            if(SceneManager.GetActiveScene().name.Equals("LevelBuilder"))
+            {
+                this.enabled = false;
+
+            }
+        }
+
 
         private void Start()
         {

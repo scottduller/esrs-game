@@ -19,7 +19,6 @@ namespace GameScripts
 
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log(other.tag);
             if (other.tag.Equals("Player"))
             {
                 GameEventManager.OnLevelComplete(this,EventArgs.Empty);

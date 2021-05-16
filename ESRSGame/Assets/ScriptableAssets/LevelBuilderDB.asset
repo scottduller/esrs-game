@@ -38,3 +38,13 @@ MonoBehaviour:
       type: 2}
     isFloor: 0
     isInteractable: 1
+  - index: 5
+    PlacedObjectTypeSo: {fileID: 11400000, guid: b345c50c99bab8f4193fa8034a7e3c76,
+      type: 2}
+    isFloor: 0
+    isInteractable: 1
+  - index: 6
+    PlacedObjectTypeSo: {fileID: 11400000, guid: deb6be186a751d54b8b011d95308d819,
+      type: 2}
+    isFloor: 0
+    isInteractable: 1

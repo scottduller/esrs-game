@@ -81,21 +81,17 @@ namespace GameScripts.Player
             }
         }
 
-        private void UpdateWeapon(WeaponSO weapon)
+        public void UpdateWeapon(WeaponSO weapon)
         {
-            Destroy(this.currentWeaponSo);
-            GameEventManager.OnWeaponPickup?.Invoke( this,new GameEventManager.OnWeaponPickUpEventArgs(weapon));
+            Destroy(transform.Find("GunSpawn").GetChild(0).gameObject);
+            
             this.currentWeaponSo = weapon;
-        }
+            Instantiate(currentWeaponSo.weaponPrefab, transform.Find("GunSpawn").transform);
+            
+            GameEventManager.OnWeaponPickup?.Invoke(this,new GameEventManager.OnWeaponPickUpEventArgs(weapon));
 
-        // public void PowerUpPickUp(GameObject item)
-        // {
-        //     if(item.tag == "Weapon")
-        //     {
-        //         Debug.Log("pickedUp");
-        //         UpdateWeapon(item);
-        //     }
-        // }
+        }
+        
 
     }
 }
