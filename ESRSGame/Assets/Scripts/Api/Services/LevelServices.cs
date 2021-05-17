@@ -195,7 +195,7 @@ namespace Api.Services
                 else
                 {
                     Level level = JsonUtility.FromJson<Level>(request.downloadHandler.text);
-                    EditorUtility.DisplayDialog("Update Level", level.ToString(), "Ok");
+                    // EditorUtility.DisplayDialog("Update Level", level.ToString(), "Ok");
                 }
             }
         }

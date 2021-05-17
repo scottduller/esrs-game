@@ -9,7 +9,7 @@ namespace GameScripts.Enemy
         private float projectileSpeed;
         private Material material;
         private float _lifetime;
-        private float _lifespan = 10;
+        private float _lifespan;
 
         Vector3 direction;
 
@@ -24,6 +24,7 @@ namespace GameScripts.Enemy
             this.projectileSpeed = projectileSpeed;
             this.material = material;
             GetComponent<Renderer>().material = this.material;
+            _lifespan = 30;
             _lifetime = _lifespan;
         }
 
